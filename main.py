@@ -4,9 +4,10 @@ from time import sleep, time
 from web3_account import Web3Account, Web3
 from datetime import datetime
 from eth_account.messages import encode_defunct
-from random import choice
+from random import choice, uniform
 from os import path, getcwd
 from Modules.Decrypt import decrypt_files
+from threading import Thread
 
 URL = "https://api.tokensoft.io/auth/api/v1/"
 headers = {
@@ -161,7 +162,10 @@ class Connext:
                 
                 if len(result) == 0:
                     return ["NOT ELIGIBLE"]
-                return result
+                
+                sleep(uniform(0.1, 2))
+                with open("results.txt", "a", encoding="utf-8") as file:
+                    file.write(f'{self.account.address} | {"".join(i + " " for i in result)}\n')
 
             else: raise Exception(
                     "Bad response"
@@ -180,9 +184,10 @@ if __name__ == "__main__":
     SECRETS_TYPE = "AUTOSOFT" # encrypting 
     DECRYPT_TYPE = "Flash"
     DISK = "E:"
+    THREADS = 10
 
     proxies = [
-        {}, {}, {} # optinal
+        {}, {}, {} # optional
     ]
 
     with open("secrets.txt", encoding="utf-8") as file:
@@ -195,11 +200,20 @@ if __name__ == "__main__":
         ]
         
     else: runner_secrets = secrets_data
-    
 
-    for secret_key in runner_secrets:
-        account = Web3Account(secret_key, "zksync")
-        elig_response = Connext(account, proxies=choice(proxies)).check_eligible()
+    runner_secrets.reverse()
 
-        with open("results.txt", "a", encoding="utf-8") as file:
-            file.write(f'{account.address} | {"".join(i + " " for i in elig_response)}\n')
+    while len(runner_secrets) != 0:
+        threads = []
+        for _ in range(THREADS):
+            try:
+                connext = Connext(Web3Account(runner_secrets.pop(), "zksync"), proxies=choice(proxies))
+                thread = Thread(target=connext.check_eligible, args=())
+
+                threads.append(thread)
+
+                thread.start()
+            except: pass
+        
+        for i in threads:
+            i.join()
