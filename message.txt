@@ -1,0 +1,10 @@
+airdrop.connext.network wants you to sign in with your Ethereum account:
+ADDRESS
+
+This site is powered by Tokensoft. Sign this message to prove ownership of this wallet and accept our Terms of Service, Privacy Policy, and Cookie Policy: https://tokensoft.io/legal
+
+URI: https://airdrop.connext.network
+Version: 1
+Chain ID: 1
+Nonce: NONCE_1
+Issued At: TIMING
