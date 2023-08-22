@@ -1,13 +1,15 @@
 # ConnextChecker
 ### How to start checker
 В файлик secrets.txt загружаем чисто приватники ЛИБО грузим данные из encoded_secrets (для пользователей AUTOSOFT)
+
 Если все же загрузили шифрованные приватники, то укажите настройки SECRETS_TYPE = "AUTOSOFT" (для пользователей AUTOSOFT, если вставляете просто приватники, то любое другое значение пишите)
+
 DECRYPT_TYPE - Для юзеров AUTOSOFT (остальным не нужно)
 DISK - Для юзеров AUTOSOFT (остальным не нужно)
 
 В proxies можно вставить прокси в формате:
 ~~~python
-"""
+
  proxies = [
         {
             "http": "http://user:pass@ip:port",
@@ -22,7 +24,8 @@ DISK - Для юзеров AUTOSOFT (остальным не нужно)
             "https": "http://user3:pass@ip:port"
         } # optinal
     ]
-"""
+
+~~~
 Но и без прокси все прекрасно пашет
 В целом все, запускаем py main.py и смотрим результаты в results.txt
 
